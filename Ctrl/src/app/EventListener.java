@@ -33,7 +33,8 @@ public class EventListener extends JedisPubSub {
 				this.logW.write(System.nanoTime() + "\n");
 				this.logW.flush();
 				Jedis j = this.pool.getResource();
-				j.set("N1_hw", "%f".formatted(Math.random()*10));
+				j.set("N1_hw","1");
+				j.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
