@@ -5,5 +5,5 @@
     <artifactId>emialbertoExp</artifactId>
     <version>0.0.1</version>
   </parent>
-  <artifactId>DB</artifactId>
+  <artifactId>Ctrl</artifactId>
 </project>
