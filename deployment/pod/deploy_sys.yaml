@@ -1,0 +1,22 @@
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "system"
+  namespace: "default"
+  labels:
+    app: "system"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "sys-pod"
+  template:
+    metadata:
+      labels:
+        app: "sys-pod"
+    spec:
+      containers:
+      - name: "sys-pod"
+        image: "ubuntu:22.04"
+        imagePullPolicy: "Always"
+        command: ["sleep","365d"]

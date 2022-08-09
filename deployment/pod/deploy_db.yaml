@@ -1,0 +1,21 @@
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "monitor-pod"
+  namespace: "default"
+  labels:
+    app: "monitor-pod"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "monitor-pod"
+  template:
+    metadata:
+      labels:
+        app: "monitor-pod"
+    spec:
+      containers:
+      - name: "monitor-pod"
+        image: "redis:7.0.4"
+        imagePullPolicy: "Always"
