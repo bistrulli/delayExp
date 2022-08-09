@@ -17,7 +17,7 @@ public class EventListener extends JedisPubSub {
 
 	public EventListener() {
 		this.logFile = new File(String.format("%s_t2.log", "Ctrl"));
-		this.pool = new JedisPool(new JedisPoolConfig(), "localhost");
+		this.pool = new JedisPool(new JedisPoolConfig(), Main.jedisHost);
 		try {
 			this.logW = new FileWriter(this.logFile);
 		} catch (IOException e) {
