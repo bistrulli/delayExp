@@ -6,7 +6,7 @@ import redis.clients.jedis.JedisPoolConfig;
 
 public class Main {
 	public static void main(String[] args) {
-		JedisPool pool = new JedisPool(new JedisPoolConfig(), "localhost");
+		JedisPool pool = new JedisPool(new JedisPoolConfig(), "monitor");
 
 		Jedis jedis = pool.getResource();
 		jedis.psubscribe(new EventListener(), "__key*__:N1_rt");
