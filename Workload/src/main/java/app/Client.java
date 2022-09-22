@@ -2,6 +2,7 @@ package app;
 
 import java.net.URI;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -38,8 +39,9 @@ public class Client implements Runnable {
 	public void run() {
 		try {
 
-			HttpResponse<String> resp = null;
+			//HttpResponse<String> resp = null;
 			int thinking = this.task.getState().get("think").incrementAndGet();
+			CompletableFuture<HttpResponse<String>> resp=null;
 
 			while (!this.dying) {
 
@@ -50,15 +52,20 @@ public class Client implements Runnable {
 				SimpleTask.getLogger().debug(String.format("%s sending", this.task.getName()));
 				this.task.getState().get("think").decrementAndGet();
 
-				resp = Unirest.get(URI.create("http://" + Client.getTier1Host() + ":3100/?id=" + this.clietId.toString()
-						+ "&entry=e1" + "&snd=think").toString()).header("Connection", "close").asString();
+//				resp = Unirest.get(URI.create("http://" + Client.getTier1Host() + ":3100/?id=" + this.clietId.toString()
+//						+ "&entry=e1" + "&snd=think").toString()).header("Connection", "close").asString();
+				
+				this.clietId = UUID.randomUUID();
+				Unirest.get(URI.create("http://" + Client.getTier1Host() + ":3100/?id=" + this.clietId.toString()
+				+ "&entry=e1" + "&snd=think").toString()).header("Connection", "close").asStringAsync();
+				
 				
 				thinking = this.task.getState().get("think").incrementAndGet();
 				
 				this.task.getRts().addSample(new rtSample(this.task.getEnqueueTime().get(this.clietId.toString()),
 						System.nanoTime()));
 				
-				System.out.println("request");
+				//System.out.println("request");
 			}
 			SimpleTask.getLogger().debug(String.format(" user %s stopped", this.clietId));
 		} catch (InterruptedException e2) {

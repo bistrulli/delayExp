@@ -10,6 +10,7 @@
   	<module>Workload</module>
   	<module>N1</module>
   	<module>Ctrl</module>
+  	<module>N2</module>
   </modules>
   <build>
 		<sourceDirectory>src</sourceDirectory>

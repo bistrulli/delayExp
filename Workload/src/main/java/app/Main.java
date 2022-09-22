@@ -9,7 +9,6 @@ import java.util.concurrent.ExecutionException;
 
 import com.google.common.net.InetAddresses;
 import com.google.common.net.InternetDomainName;
-import com.google.gson.Gson;
 
 import Server.SimpleTask;
 import gnu.getopt.Getopt;
@@ -24,12 +23,21 @@ public class Main {
 	private static File expFile = null;
 	private static String tier1Host = null;
 	private static boolean sim;
+	private static Long aRate=null;
 
 	public static void main(String[] args) {
 
 		System.setProperty("net.spy.log.LoggerImpl", "net.spy.memcached.compat.log.SLF4JLogger");
 		Unirest.config().concurrency(2000,2000); 
 		Main.getCliOptions(args);
+		
+		if(Main.aRate == null && Main.initPop==null) {
+			System.err.println("At least one between aRate and initPop should be set");
+		}
+		
+		System.out.println(Main.initPop);
+		System.out.println(Main.aRate);
+		
 		final SimpleTask[] Sys = Main.genSystem();
 		Sys[0].start();
 	}
@@ -63,8 +71,12 @@ public class Main {
 		HashMap<String, Class> clientEntries = new HashMap<String, Class>();
 		HashMap<String, Long> clientEntries_stimes = new HashMap<String, Long>();
 		clientEntries.put("think", Client.class);
-		clientEntries_stimes.put("think", 1000l);
-		final SimpleTask client = new SimpleTask(clientEntries, clientEntries_stimes, Main.initPop, "Client",
+		
+		int pop=Main.initPop!=-1?Main.initPop:1;
+		long arate=Main.aRate!=null?Main.aRate:1000l; 
+		
+		clientEntries_stimes.put("think", arate);
+		final SimpleTask client = new SimpleTask(clientEntries, clientEntries_stimes,pop, "Client",
 				Main.dbHost, null,1l);
 		Client.setTier1Host(Main.tier1Host);
 		return new SimpleTask[] { client };
@@ -76,10 +88,11 @@ public class Main {
 
 	public static void getCliOptions(String[] args) {
 		int c;
-		LongOpt[] longopts = new LongOpt[3];
-		longopts[0] = new LongOpt("initPop", LongOpt.REQUIRED_ARGUMENT, null, 0);
+		LongOpt[] longopts = new LongOpt[4];
+		longopts[0] = new LongOpt("initPop", LongOpt.OPTIONAL_ARGUMENT, null, 0);
 		longopts[1] = new LongOpt("dbHost", LongOpt.REQUIRED_ARGUMENT, null, 1);
 		longopts[2] = new LongOpt("tier1Host", LongOpt.REQUIRED_ARGUMENT, null, 2);
+		longopts[3] = new LongOpt("aRate", LongOpt.OPTIONAL_ARGUMENT, null, 3);
 		
 
 		Getopt g = new Getopt("ddctrl", args, "", longopts);
@@ -108,6 +121,16 @@ public class Main {
 					Main.tier1Host = String.valueOf(g.getOptarg());
 				} catch (Exception e) {
 					e.printStackTrace();
+				}
+				break;
+			case 3:
+				try {
+					Main.aRate = Long.valueOf(g.getOptarg());
+					if(aRate<0) {
+						throw new Exception();
+					}
+				} catch (Exception e) {
+					System.err.println(String.format("%s is not valid, it must be a Long number >0.", g.getOptarg()));
 				}
 				break;
 			default:

@@ -1,6 +1,7 @@
 package app;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -23,13 +24,18 @@ public class Main {
 	private static String dbHost = null;
 	private static boolean cgv2= false;
 	private static Integer port=3000;
+	private static String name;
 
 	public static void main(String[] args) {
 		System.setProperty("net.spy.log.LoggerImpl", "net.spy.memcached.compat.log.SLF4JLogger");
 		Unirest.config().concurrency(2000,2000); 
 		Main.getCliOptions(args);
 		if(Main.cgv2) {
-			Main.addToCgv2();
+			try {
+				Main.addToCgv2();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		SimpleTask[] Sys = Main.genSystem();
 		Sys[0].start();
@@ -56,8 +62,8 @@ public class Main {
 		HashMap<String, Class> t1Entries = new HashMap<String, Class>();
 		HashMap<String, Long> t1Entries_stimes = new HashMap<String, Long>();
 		t1Entries.put("e1", N1HTTPHandler.class);
-		t1Entries_stimes.put("e1", 100l);
-		final SimpleTask N1 = new SimpleTask("localhost", Main.port, t1Entries, t1Entries_stimes, 1, Main.isEmu, "N1",
+		t1Entries_stimes.put("e1", 200l);
+		final SimpleTask N1 = new SimpleTask("localhost", Main.port, t1Entries, t1Entries_stimes, 300, Main.isEmu, "N1",
 				Main.dbHost,1l,1l,null,Main.cgv2);
 		N1.setHwCore(1f);
 		return new SimpleTask[] { N1 };
@@ -68,13 +74,19 @@ public class Main {
         		InternetDomainName.isValid(hostname);
     }
 	
-	public static void addToCgv2() {
+	private static Boolean isCgroupV2Enabled() {
+		File cgfile = new File("/sys/fs/cgroup/"+Main.name+"/cgroup.procs");
+		return cgfile.exists();
+	}
+	
+	public static void addToCgv2() throws Exception {
+		if(Main.isCgroupV2Enabled()) {
 		try {
 			int tid = GetThreadID.get_tid();
 			// aggiungo questo thread al gruppo dei serventi del tier
 			BufferedWriter out;
 			try {
-				out = new BufferedWriter(new FileWriter("/sys/fs/cgroup/t1/cgroup.procs", true));
+				out = new BufferedWriter(new FileWriter("/sys/fs/cgroup/"+Main.name+"/cgroup.procs", true));
 				out.write(String.valueOf(tid));
 				out.flush();
 				out.close();
@@ -84,16 +96,22 @@ public class Main {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		}else{
+			throw new Exception("Cgroupv2 is not enabled");
+		}
 	}
 
 	public static void getCliOptions(String[] args) {
+		
+		
 
 		int c;
-		LongOpt[] longopts = new LongOpt[4];
+		LongOpt[] longopts = new LongOpt[5];
 		longopts[0] = new LongOpt("cpuEmu", LongOpt.REQUIRED_ARGUMENT, null, 0);
 		longopts[1] = new LongOpt("dbHost", LongOpt.REQUIRED_ARGUMENT, null, 1);
 		longopts[2] = new LongOpt("cgv2", LongOpt.REQUIRED_ARGUMENT, null, 2);
 		longopts[3] = new LongOpt("port", LongOpt.REQUIRED_ARGUMENT, null, 3);
+		longopts[4] = new LongOpt("name", LongOpt.REQUIRED_ARGUMENT, null, 4);
 		
 
 		Getopt g = new Getopt("ddctrl", args, "", longopts);
@@ -127,6 +145,13 @@ public class Main {
 			case 3:
 				try {
 					Main.port = Integer.valueOf(g.getOptarg());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				break;
+			case 4:
+				try {
+					Main.name = String.valueOf(g.getOptarg());
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
