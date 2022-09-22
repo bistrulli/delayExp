@@ -89,10 +89,10 @@ public class Main {
 	public static void getCliOptions(String[] args) {
 		int c;
 		LongOpt[] longopts = new LongOpt[4];
-		longopts[0] = new LongOpt("initPop", LongOpt.OPTIONAL_ARGUMENT, null, 0);
+		longopts[0] = new LongOpt("initPop", LongOpt.REQUIRED_ARGUMENT, null, 0);
 		longopts[1] = new LongOpt("dbHost", LongOpt.REQUIRED_ARGUMENT, null, 1);
 		longopts[2] = new LongOpt("tier1Host", LongOpt.REQUIRED_ARGUMENT, null, 2);
-		longopts[3] = new LongOpt("aRate", LongOpt.OPTIONAL_ARGUMENT, null, 3);
+		longopts[3] = new LongOpt("aRate", LongOpt.REQUIRED_ARGUMENT, null, 3);
 		
 
 		Getopt g = new Getopt("ddctrl", args, "", longopts);
