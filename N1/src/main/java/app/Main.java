@@ -71,7 +71,7 @@ public class Main {
 		N1.setHwCore(1f);
 		N1.getCtrl().setNr(Main.nr);
 		N1.getCtrl().setAlpha(Main.alfa);
-		N1.getCtrl().setTauro(Main.tgt);
+		N1.getCtrl().setTauro(Main.tgt); 
 		
 		return new SimpleTask[] { N1 };
 	}
