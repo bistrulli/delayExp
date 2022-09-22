@@ -63,7 +63,7 @@ public class Main {
 		HashMap<String, Long> t1Entries_stimes = new HashMap<String, Long>();
 		t1Entries.put("e1", N1HTTPHandler.class);
 		t1Entries_stimes.put("e1", 200l);
-		final SimpleTask N1 = new SimpleTask("localhost", Main.port, t1Entries, t1Entries_stimes, 300, Main.isEmu, "N1",
+		final SimpleTask N1 = new SimpleTask("localhost", Main.port, t1Entries, t1Entries_stimes, 4, Main.isEmu, Main.name,
 				Main.dbHost,1l,1l,null,Main.cgv2);
 		N1.setHwCore(1f);
 		return new SimpleTask[] { N1 };
