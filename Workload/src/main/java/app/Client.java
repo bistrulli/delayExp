@@ -47,7 +47,7 @@ public class Client implements Runnable {
 
 				this.task.getEnqueueTime().put(this.clietId.toString(), System.nanoTime());
 				SimpleTask.getLogger().debug(String.format("%s thinking", thinking));
-				TimeUnit.MILLISECONDS.sleep(Double.valueOf(this.dist.getMean()).longValue());
+				TimeUnit.MILLISECONDS.sleep(Double.valueOf(this.dist.sample()).longValue());
 
 				SimpleTask.getLogger().debug(String.format("%s sending", this.task.getName()));
 				this.task.getState().get("think").decrementAndGet();
