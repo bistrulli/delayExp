@@ -44,9 +44,9 @@ public class Main {
 
 		final SimpleTask[] Sys = Main.genSystem();
 
-		ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
-		Simlation sim = new Simlation(Sys[0], 300);
-		exec.scheduleAtFixedRate(sim, 0, 1, TimeUnit.SECONDS);
+//		ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
+//		Simlation sim = new Simlation(Sys[0], 300);
+//		exec.scheduleAtFixedRate(sim, 0, 1, TimeUnit.SECONDS);
 
 		Sys[0].start();
 	}
@@ -85,7 +85,7 @@ public class Main {
 		long arate = Main.aRate != null ? Main.aRate : 1000l;
 
 		clientEntries_stimes.put("think", arate);
-		final SimpleTask client = new SimpleTask(clientEntries, clientEntries_stimes, pop, "Client", Main.dbHost, null,
+		final SimpleTask client = new SimpleTask(clientEntries, clientEntries_stimes, pop*2, "Client", Main.dbHost, null,
 				1l);
 		Client.setTier1Host(Main.tier1Host);
 		return new SimpleTask[] { client };
