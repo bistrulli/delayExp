@@ -1,6 +1,5 @@
 package app;
 
-
 import java.io.File;
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -28,27 +27,27 @@ public class Main {
 	private static File expFile = null;
 	private static String tier1Host = null;
 	private static boolean sim;
-	private static Long aRate=null;
+	private static Long aRate = null;
 
 	public static void main(String[] args) {
 
 		System.setProperty("net.spy.log.LoggerImpl", "net.spy.memcached.compat.log.SLF4JLogger");
-		Unirest.config().concurrency(2000,2000); 
+		Unirest.config().concurrency(2000, 2000);
 		Main.getCliOptions(args);
-		
-		if(Main.aRate == null && Main.initPop==null) {
+
+		if (Main.aRate == null && Main.initPop == null) {
 			System.err.println("At least one between aRate and initPop should be set");
 		}
-		
+
 		System.out.println(Main.initPop);
 		System.out.println(Main.aRate);
-		
+
 		final SimpleTask[] Sys = Main.genSystem();
-		
+
 		ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
-		Simlation sim=new Simlation(Sys[0],300);
+		Simlation sim = new Simlation(Sys[0], 300);
 		exec.scheduleAtFixedRate(sim, 0, 1, TimeUnit.SECONDS);
-		
+
 		Sys[0].start();
 	}
 
@@ -81,13 +80,13 @@ public class Main {
 		HashMap<String, Class> clientEntries = new HashMap<String, Class>();
 		HashMap<String, Long> clientEntries_stimes = new HashMap<String, Long>();
 		clientEntries.put("think", Client.class);
-		
-		int pop=Main.initPop!=-1?Main.initPop:1;
-		long arate=Main.aRate!=null?Main.aRate:1000l; 
-		
+
+		int pop = Main.initPop != -1 ? Main.initPop : 1;
+		long arate = Main.aRate != null ? Main.aRate : 1000l;
+
 		clientEntries_stimes.put("think", arate);
-		final SimpleTask client = new SimpleTask(clientEntries, clientEntries_stimes,pop, "Client",
-				Main.dbHost, null,1l);
+		final SimpleTask client = new SimpleTask(clientEntries, clientEntries_stimes, pop, "Client", Main.dbHost, null,
+				1l);
 		Client.setTier1Host(Main.tier1Host);
 		return new SimpleTask[] { client };
 	}
@@ -103,7 +102,6 @@ public class Main {
 		longopts[1] = new LongOpt("dbHost", LongOpt.REQUIRED_ARGUMENT, null, 1);
 		longopts[2] = new LongOpt("tier1Host", LongOpt.REQUIRED_ARGUMENT, null, 2);
 		longopts[3] = new LongOpt("aRate", LongOpt.REQUIRED_ARGUMENT, null, 3);
-		
 
 		Getopt g = new Getopt("ddctrl", args, "", longopts);
 		g.setOpterr(true);
@@ -136,7 +134,7 @@ public class Main {
 			case 3:
 				try {
 					Main.aRate = Long.valueOf(g.getOptarg());
-					if(aRate<0) {
+					if (aRate < 0) {
 						throw new Exception();
 					}
 				} catch (Exception e) {
