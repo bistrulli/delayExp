@@ -69,8 +69,6 @@ public class Client implements Runnable {
 				
 				this.task.getRts().addSample(new rtSample(this.task.getEnqueueTime().get(this.clietId.toString()),
 						System.nanoTime()));
-				
-				System.out.println("request");
 			}
 			SimpleTask.getLogger().debug(String.format(" user %s stopped", this.clietId));
 		} catch (InterruptedException e2) {

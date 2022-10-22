@@ -32,6 +32,7 @@ public class Simlation extends Thread {
 	public void start() {
 		super.start();
 		this.simStep += 1;
+		System.out.println("step="+this.simStep);
 		if (this.simStep % this.toChange == 0) {
 			Integer rate = this.dist.sample();
 			System.out.println("new Rate="+rate);
