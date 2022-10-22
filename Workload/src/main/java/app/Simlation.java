@@ -10,7 +10,7 @@ import us.hebi.matlab.mat.format.Mat5;
 import us.hebi.matlab.mat.types.MatFile;
 import us.hebi.matlab.mat.types.Matrix;
 
-public class Simlation extends Thread {
+public class Simlation implements Runnable {
 
 	SimpleTask generator = null;
 	Integer simStep = null;
@@ -28,9 +28,7 @@ public class Simlation extends Thread {
 		this.dist = new UniformIntegerDistribution(100, 2000);
 	}
 
-	@Override
-	public void start() {
-		super.start();
+	public void run() {
 		this.simStep += 1;
 		System.out.println("step="+this.simStep);
 		if (this.simStep % this.toChange == 0) {
