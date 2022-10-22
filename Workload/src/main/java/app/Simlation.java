@@ -34,7 +34,7 @@ public class Simlation implements Runnable {
 		if (this.simStep % this.toChange == 0) {
 			Integer rate = this.dist.sample();
 			System.out.println("new Rate="+rate);
-			this.roi.add(Client.getClients().size()/(rate.doubleValue()/1000.0));
+			this.roi.add(30.0/(rate.doubleValue()/1000.0));
 			this.ctime.add(Long.valueOf(System.nanoTime()).doubleValue());
 			for (Client c : Client.getClients()) {
 				c.setThinkTime(rate.longValue());
