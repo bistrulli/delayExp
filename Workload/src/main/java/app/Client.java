@@ -3,6 +3,7 @@ package app;
 import java.net.URI;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -28,6 +29,8 @@ public class Client implements Runnable {
 	private Boolean dying = null;
 	private static String tier1Host = null;
 	public static AtomicBoolean isStarted = new AtomicBoolean(false);
+	
+	private static ConcurrentLinkedQueue<Client> clients=new ConcurrentLinkedQueue<>(); 
 
 	public Client(SimpleTask task, Long ttime) {
 		this.setThinkTime(ttime);
@@ -42,6 +45,8 @@ public class Client implements Runnable {
 			HttpResponse<String> resp = null;
 			int thinking = this.task.getState().get("think").incrementAndGet();
 			//CompletableFuture<HttpResponse<String>> resp=null;
+			
+			clients.add(this);
 
 			while (!this.dying) {
 
@@ -104,6 +109,14 @@ public class Client implements Runnable {
 
 	public static void setTier1Host(String tier1Host) {
 		Client.tier1Host = tier1Host;
+	}
+
+	public static ConcurrentLinkedQueue<Client> getClients() {
+		return clients;
+	}
+
+	public static void setClients(ConcurrentLinkedQueue<Client> clients) {
+		Client.clients = clients;
 	}
 
 }

@@ -6,6 +6,11 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import com.google.common.net.InetAddresses;
 import com.google.common.net.InternetDomainName;
@@ -39,6 +44,11 @@ public class Main {
 		System.out.println(Main.aRate);
 		
 		final SimpleTask[] Sys = Main.genSystem();
+		
+		ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
+		Simlation sim=new Simlation(Sys[0],300);
+		exec.scheduleAtFixedRate(sim, 0, 1, TimeUnit.SECONDS);
+		
 		Sys[0].start();
 	}
 
