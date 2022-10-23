@@ -6,5 +6,4 @@
     <version>0.0.1</version>
   </parent>
   <artifactId>N2</artifactId>
-  <packaging>pom</packaging>
 </project>

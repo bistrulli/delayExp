@@ -2,7 +2,6 @@ package app;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.URI;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
@@ -11,26 +10,20 @@ import com.sun.net.httpserver.HttpExchange;
 
 import Server.SimpleTask;
 import Server.TierHttpHandler;
-import kong.unirest.HttpResponse;
-import kong.unirest.Unirest;
-import kong.unirest.UnirestException;
-import monitoring.rtSample;
 
 @SuppressWarnings("restriction")
-public class N1HTTPHandler extends TierHttpHandler {
+public class N2HTTPHandler extends TierHttpHandler {
 
 
-	public N1HTTPHandler(SimpleTask lqntask, HttpExchange req, long stime) {
+	public N2HTTPHandler(SimpleTask lqntask, HttpExchange req, long stime) {
 		super(lqntask, req, stime);
 	}
 
 	public void handleResponse(HttpExchange req, String requestParamValue) throws InterruptedException, IOException {
 		this.addToCGV2Group(this.getName());
 		this.measureIngress();
-		Map<String, String> params = this.getLqntask().queryToMap(req.getRequestURI().getQuery());
 		
-		HttpResponse<String> resp = Unirest.get(URI.create("http://localhost:3200/?id=" + params.get("id")
-		+ "&entry=e1" + "&snd=e1").toString()).header("Connection", "close").asString();
+		Map<String, String> params = this.getLqntask().queryToMap(req.getRequestURI().getQuery());
 
 		Jinjava jinjava = new Jinjava();
 		Map<String, Object> context = Maps.newHashMap();
@@ -64,7 +57,7 @@ public class N1HTTPHandler extends TierHttpHandler {
 
 	@Override
 	public String getWebPageName() {
-		return "tier1.html";
+		return "tier2.html";
 	}
 
 	@Override
