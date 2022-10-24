@@ -65,7 +65,7 @@ public class Main {
 		HashMap<String, Class> tEntries = new HashMap<String, Class>();
 		HashMap<String, Long> tEntries_stimes = new HashMap<String, Long>();
 		tEntries.put("e1", N2HTTPHandler.class);
-		tEntries_stimes.put("e1", 150l);
+		tEntries_stimes.put("e1", 90l);
 		final SimpleTask N = new SimpleTask("localhost", Main.port, tEntries, tEntries_stimes, 30, Main.isEmu,
 				Main.name, Main.dbHost, 1l, 1l, null, Main.cgv2);
 		N.setHwCore(1f);
