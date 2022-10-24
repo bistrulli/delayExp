@@ -2,7 +2,7 @@ clear
 
 N1data=load("../N1/N1out.mat");
 N2data=load("../N2/N2out.mat");
-Wdata=load("../Workload/roi_profile.mat");
+Wdata
 %Wdata=load("../Workload/roi_profile.mat");
 
 n1d=N1data.rt(1:1:end);
@@ -20,6 +20,7 @@ title("N1")
 stairs(n1d);
 plot(n1Cum);
 yline(N1req,'-.');
+
 e1=abs(n1Cum(1,end)-N1req)*100/N1req;
 
 
