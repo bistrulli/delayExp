@@ -64,11 +64,11 @@ public class N1HTTPHandler extends TierHttpHandler {
 
 	@Override
 	public String getWebPageName() {
-		return "tier2.html";
+		return "tier1.html";
 	}
 
 	@Override
 	public String getName() {
-		return "e2";
+		return "e1";
 	}
 }
