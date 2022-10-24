@@ -57,7 +57,7 @@ public class Client implements Runnable {
 				SimpleTask.getLogger().debug(String.format("%s sending", this.task.getName()));
 				this.task.getState().get("think").decrementAndGet();
 
-				resp = Unirest.get(URI.create("http://" + Client.getTier1Host() + ":3100/?id=" + this.clietId.toString()
+				resp = Unirest.get(URI.create("http://" + Client.getTier1Host() + ":3200/?id=" + this.clietId.toString()
 						+ "&entry=e1" + "&snd=think").toString()).header("Connection", "close").asString();
 				
 //				this.clietId = UUID.randomUUID();
