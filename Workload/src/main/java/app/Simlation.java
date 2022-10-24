@@ -19,7 +19,7 @@ public class Simlation implements Runnable {
 	ArrayList<Double> roi = null;
 	ArrayList<Double> ctime = null;
 	int[] rates = null;
-	int rIdx=0;
+	int rIdx = 0;
 
 	public Simlation(SimpleTask generator, Integer toChange) {
 		this.generator = generator;
@@ -28,40 +28,15 @@ public class Simlation implements Runnable {
 		this.roi = new ArrayList<Double>();
 		this.ctime = new ArrayList<Double>();
 		// this.dist = new UniformIntegerDistribution(50, 300);
-		//this.rates = new int[] { 300, 50, 100, 200 };
-		this.rates = new int[] {150};
+		// this.rates = new int[] { 300, 50, 100, 200 };
+		this.rates = new int[] { 150 };
 	}
 
 	public void run() {
 		this.simStep += 1;
 		System.out.println("step=" + this.simStep);
 		if (this.simStep % this.toChange == 0) {
-			// Integer rate = this.dist.sample();
-			Integer rate = this.rates[this.rIdx];
-			System.out.println("new Rate=" + rate);
-			this.roi.add(30.0 / (rate.doubleValue() / 1000.0));
-			this.ctime.add(Long.valueOf(System.nanoTime()).doubleValue());
-			for (Client c : Client.getClients()) {
-				c.setThinkTime(rate.longValue());
-			}
-
-			MatFile matFile = Mat5.newMatFile();
-			Matrix roiMatrix = Mat5.newMatrix(1, this.roi.size());
-			Matrix ctimeMatrix = Mat5.newMatrix(1, this.ctime.size());
-			for (int i = 0; i < this.roi.size(); i++) {
-				roiMatrix.setDouble(0, i, this.roi.get(i));
-				ctimeMatrix.setDouble(0, i, this.ctime.get(i));
-			}
-			matFile.addArray("roi", roiMatrix);
-			matFile.addArray("ctime", ctimeMatrix);
-			try {
-				Mat5.writeToFile(matFile, "roi_profile.mat");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			this.rIdx += 1;
-			if (this.rIdx >= this.rates.length) {
+			if (this.rIdx > this.rates.length) {
 				try {
 					System.out.println("killing N1");
 					Process proc = Runtime.getRuntime().exec("sudo pkill -9 -f N1-0.0.1-jar-with-dependencies.jar");
@@ -75,7 +50,33 @@ public class Simlation implements Runnable {
 				} catch (IOException | InterruptedException e) {
 					e.printStackTrace();
 				}
+			} else {
+				// Integer rate = this.dist.sample();
+				Integer rate = this.rates[this.rIdx];
+				System.out.println("new Rate=" + rate);
+				this.roi.add(30.0 / (rate.doubleValue() / 1000.0));
+				this.ctime.add(Long.valueOf(System.nanoTime()).doubleValue());
+				for (Client c : Client.getClients()) {
+					c.setThinkTime(rate.longValue());
+				}
+
+				MatFile matFile = Mat5.newMatFile();
+				Matrix roiMatrix = Mat5.newMatrix(1, this.roi.size());
+				Matrix ctimeMatrix = Mat5.newMatrix(1, this.ctime.size());
+				for (int i = 0; i < this.roi.size(); i++) {
+					roiMatrix.setDouble(0, i, this.roi.get(i));
+					ctimeMatrix.setDouble(0, i, this.ctime.get(i));
+				}
+				matFile.addArray("roi", roiMatrix);
+				matFile.addArray("ctime", ctimeMatrix);
+				try {
+					Mat5.writeToFile(matFile, "roi_profile.mat");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
+
+			this.rIdx += 1;
 		}
 	}
 }
