@@ -19,6 +19,7 @@ public class Simlation implements Runnable {
 	ArrayList<Double> roi = null;
 	ArrayList<Double> ctime = null;
 	int[] rates = null;
+	int rIdx=0;
 
 	public Simlation(SimpleTask generator, Integer toChange) {
 		this.generator = generator;
@@ -34,10 +35,9 @@ public class Simlation implements Runnable {
 	public void run() {
 		this.simStep += 1;
 		System.out.println("step=" + this.simStep);
-		int r = 0;
 		if (this.simStep % this.toChange == 0) {
 			// Integer rate = this.dist.sample();
-			Integer rate = this.rates[r];
+			Integer rate = this.rates[this.rIdx];
 			System.out.println("new Rate=" + rate);
 			this.roi.add(30.0 / (rate.doubleValue() / 1000.0));
 			this.ctime.add(Long.valueOf(System.nanoTime()).doubleValue());
@@ -60,8 +60,8 @@ public class Simlation implements Runnable {
 				e.printStackTrace();
 			}
 
-			r += 1;
-			if (r > this.rates.length) {
+			this.rIdx += 1;
+			if (this.rIdx > this.rates.length) {
 				try {
 					Process proc = Runtime.getRuntime().exec("pkill -9 -f Workload-0.0.1-jar-with-dependencies.jar");
 					proc.waitFor();
