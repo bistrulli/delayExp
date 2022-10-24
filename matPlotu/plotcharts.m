@@ -6,8 +6,8 @@ Wdata=load("../Workload/roi_profile.mat");
 
 startTime=0;
 
-n1d=N1data.rt(N1data.ctime>=startTime);
-n2d=N2data.rt(N2data.ctime>=startTime);
+n1d=N1data.rt;
+n2d=N2data.rt;
 
 N1req=0.25;
 N2req=0.15;
