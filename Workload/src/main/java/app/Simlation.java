@@ -28,8 +28,7 @@ public class Simlation implements Runnable {
 		this.roi = new ArrayList<Double>();
 		this.ctime = new ArrayList<Double>();
 		// this.dist = new UniformIntegerDistribution(50, 300);
-		// this.rates = new int[] { 300, 50, 100, 200 };
-		this.rates = new int[] { 150 };
+		this.rates = new int[] { 150, 50, 200, 30, 30 };
 	}
 
 	public void run() {
@@ -60,6 +59,7 @@ public class Simlation implements Runnable {
 				e.printStackTrace();
 			}
 
+			this.rIdx += 1;
 			if (this.rIdx >= this.rates.length) {
 				try {
 					System.out.println("killing N1");
@@ -75,8 +75,6 @@ public class Simlation implements Runnable {
 					e.printStackTrace();
 				}
 			}
-			
-			this.rIdx += 1;
 		}
 	}
 }

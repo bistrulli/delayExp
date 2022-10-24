@@ -17,7 +17,7 @@ n2Cum=cumsum(n2d)./linspace(1,size(n2d,2),size(n2d,2));
 
 figure
 hold on
-title("N1")
+title("N1_rt")
 stairs(n1d);
 plot(n1Cum);
 yline(N1req,'-.');
@@ -28,8 +28,18 @@ e1=abs(n1Cum(1,end)-N1req)*100/N1req;
 
 figure
 hold on
+title("N1_{core}")
+stairs(N1data.core);
+
+figure
+hold on
 title("N2")
 stairs(n2d);
 plot(n2Cum);
 yline(N2req,'-.');
 e2=abs(n2Cum(1,end)-N2req)*100/N2req;
+
+figure
+hold on
+title("N2_{core}")
+stairs(N1data.core);
