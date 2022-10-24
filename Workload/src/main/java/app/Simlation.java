@@ -28,8 +28,8 @@ public class Simlation implements Runnable {
 		this.roi = new ArrayList<Double>();
 		this.ctime = new ArrayList<Double>();
 		// this.dist = new UniformIntegerDistribution(50, 300);
-		this.rates = new int[] { 300, 50, 100, 200 };
-
+		//this.rates = new int[] { 300, 50, 100, 200 };
+		this.rates = new int[] {150};
 	}
 
 	public void run() {
@@ -63,7 +63,14 @@ public class Simlation implements Runnable {
 			this.rIdx += 1;
 			if (this.rIdx > this.rates.length) {
 				try {
-					Process proc = Runtime.getRuntime().exec("pkill -9 -f Workload-0.0.1-jar-with-dependencies.jar");
+					System.out.println("killing Workload");
+					Process proc = Runtime.getRuntime().exec("sudo pkill -9 -f Workload-0.0.1-jar-with-dependencies.jar");
+					proc.waitFor();
+					System.out.println("killing N1");
+					proc = Runtime.getRuntime().exec("sudo pkill -9 -f N1-0.0.1-jar-with-dependencies.jar");
+					proc.waitFor();
+					System.out.println("killing N2");
+					proc = Runtime.getRuntime().exec("sudo pkill -9 -f N2-0.0.1-jar-with-dependencies.jar");
 					proc.waitFor();
 				} catch (IOException | InterruptedException e) {
 					e.printStackTrace();
