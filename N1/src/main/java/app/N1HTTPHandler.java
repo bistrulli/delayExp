@@ -13,12 +13,9 @@ import Server.SimpleTask;
 import Server.TierHttpHandler;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
-import kong.unirest.UnirestException;
-import monitoring.rtSample;
 
 @SuppressWarnings("restriction")
 public class N1HTTPHandler extends TierHttpHandler {
-
 
 	public N1HTTPHandler(SimpleTask lqntask, HttpExchange req, long stime) {
 		super(lqntask, req, stime);
@@ -28,14 +25,17 @@ public class N1HTTPHandler extends TierHttpHandler {
 		this.addToCGV2Group(this.getName());
 		this.measureIngress();
 		Map<String, String> params = this.getLqntask().queryToMap(req.getRequestURI().getQuery());
-		
-		HttpResponse<String> resp = Unirest.get(URI.create("http://localhost:3200/?id=" + params.get("id")
-		+ "&entry=e1" + "&snd=e1").toString()).header("Connection", "close").asString();
 
 		Jinjava jinjava = new Jinjava();
 		Map<String, Object> context = Maps.newHashMap();
 		context.put("task", this.getLqntask().getName());
 		context.put("entry", this.getName());
+
+		this.measureEgress();
+		HttpResponse<String> resp = Unirest
+				.get(URI.create("http://localhost:3200/?id=" + params.get("id") + "&entry=e2" + "&snd=e1").toString())
+				.header("Connection", "close").asString();
+		this.measureReturn();
 
 		String renderedTemplate = jinjava.render(this.getWebPageTpl(), context);
 
@@ -64,11 +64,11 @@ public class N1HTTPHandler extends TierHttpHandler {
 
 	@Override
 	public String getWebPageName() {
-		return "tier1.html";
+		return "tier2.html";
 	}
 
 	@Override
 	public String getName() {
-		return "e1";
+		return "e2";
 	}
 }
