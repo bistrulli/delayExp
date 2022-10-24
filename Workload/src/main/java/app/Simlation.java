@@ -61,7 +61,7 @@ public class Simlation implements Runnable {
 			}
 
 			this.rIdx += 1;
-			if (this.rIdx > this.rates.length) {
+			if (this.rIdx >= this.rates.length) {
 				try {
 					System.out.println("killing Workload");
 					Process proc = Runtime.getRuntime().exec("sudo pkill -9 -f Workload-0.0.1-jar-with-dependencies.jar");
