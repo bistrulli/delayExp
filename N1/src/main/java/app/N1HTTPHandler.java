@@ -31,11 +31,14 @@ public class N1HTTPHandler extends TierHttpHandler {
 		context.put("task", this.getLqntask().getName());
 		context.put("entry", this.getName());
 
-		this.measureEgress();
-		HttpResponse<String> resp = Unirest
-				.get(URI.create("http://localhost:3200/?id=" + params.get("id") + "&entry=e2" + "&snd=e1").toString())
-				.header("Connection", "close").asString();
-		this.measureReturn();
+//		this.measureEgress();
+//		HttpResponse<String> resp = Unirest
+//				.get(URI.create("http://localhost:3200/?id=" + params.get("id") + "&entry=e2" + "&snd=e1").toString())
+//				.header("Connection", "close").asString();
+//		this.measureReturn();
+
+		Unirest.get(URI.create("http://localhost:3200/?id=" + params.get("id") + "&entry=e2" + "&snd=e1").toString())
+				.header("Connection", "close").asStringAsync();
 
 		String renderedTemplate = jinjava.render(this.getWebPageTpl(), context);
 
