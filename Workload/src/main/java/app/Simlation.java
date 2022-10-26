@@ -42,6 +42,7 @@ public class Simlation implements Runnable {
 				rate = this.rates[this.rIdx - 1];
 				// aggiungo client
 				int nclient = Long.valueOf(this.rates[this.rIdx]).intValue() * -1;
+				System.out.println(nclient);
 				for (int c = 0; c < nclient; c++) {
 					this.generator.getThreadpool().submit(new Client(generator, rate));
 				}
