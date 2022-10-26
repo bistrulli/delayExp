@@ -74,7 +74,7 @@ n2Cum=cumsum(n2d)./linspace(1,size(n2d,2),size(n2d,2));
 figure('units','normalized','outerposition',[0 0 1 1])
 subplot(7,1,1);
 stairs((N1data.ctime-N1data.ctime(1))/(10^9),rates);
-ylim([0,max(rates)*1.05])
+ylim([min(rates),max(rates)*1.05])
 title('(a) input rate [req/s]') 
 grid on;
 box on;
@@ -134,12 +134,12 @@ subplot(7,1,7);
 hold on
 plot((N1data.ctime-N1data.ctime(1))/(10^9),[0,diff(N1data.ctime/10^9)],"LineWidth",1.5);
 plot((N1data.ctime-N1data.ctime(1))/(10^9),[0,diff(N2data.ctime/10^9)],"LineWidth",1.5,"LineStyle",'-.')
-title('(g)  allotted resources [cores]') 
+title('(g)  time between control actions [s]') 
 legend("N1","N2","Orientation","horizontal")
 grid on;
 box on;
 xlabel("time (s)")
 
-% set(gcf,'color','w');
-% exportgraphics(gcf,'realsim1.pdf')
-% close()
+set(gcf,'color','w');
+exportgraphics(gcf,'realsim2.pdf')
+close()
