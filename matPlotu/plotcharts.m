@@ -1,8 +1,8 @@
 clear
 
-N1data=load("../N1/N1out.mat");
-N2data=load("../N2/N2out.mat");
-Wdata=load("../Workload/roi_profile.mat");
+N1data=load("../N1/N1out_2.mat");
+N2data=load("../N2/N2out_2.mat");
+Wdata=load("../Workload/roi_profile_2.mat");
 
 Wdata.roi=[300,Wdata.roi(1,1:end-1)];
 rates=[];
