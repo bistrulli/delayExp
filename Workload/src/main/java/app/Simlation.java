@@ -18,7 +18,7 @@ public class Simlation implements Runnable {
 	UniformIntegerDistribution dist = null;
 	ArrayList<Double> roi = null;
 	ArrayList<Double> ctime = null;
-	int[] rates = null;
+	Long[] rates = null;
 	int rIdx = 0;
 
 	public Simlation(SimpleTask generator, Integer toChange) {
@@ -28,18 +28,37 @@ public class Simlation implements Runnable {
 		this.roi = new ArrayList<Double>();
 		this.ctime = new ArrayList<Double>();
 		// this.dist = new UniformIntegerDistribution(50, 300);
-		//this.rates = new int[] { 150, 50, 200, 30, 63 };
-		this.rates = new int[] {0, 0};
+		// this.rates = new int[] { 150, 50, 200, 30, 63 };
+		this.rates = new Long[] { 150l, -100l,150l,0l };
 	}
 
 	public void run() {
 		this.simStep += 1;
 		System.out.println("step=" + this.simStep);
 		if (this.simStep % this.toChange == 0) {
-			// Integer rate = this.dist.sample();
-			Integer rate = this.rates[this.rIdx];
+
+			Long rate = null;
+			if (this.rates[this.rIdx] < 0) {
+				rate = this.rates[this.rIdx - 1];
+				// aggiungo client
+				int nclient = Long.valueOf(this.rates[this.rIdx]).intValue() * -1;
+				for (int c = 0; c < nclient; c++) {
+					this.generator.getThreadpool().submit(new Client(generator, rate));
+				}
+
+			} else if (this.rates[this.rIdx - 1] < 0) {
+				// rimuovo client precedenti
+				int nclient = Long.valueOf(this.rates[this.rIdx - 1]).intValue() * -1;
+				for (int c = 0; c < nclient; c++) {
+					Client.getClients().poll().setDying(true);
+				}
+				rate = this.rates[this.rIdx];
+			} else {
+				rate = this.rates[this.rIdx];
+			}
+
 			System.out.println("new Rate=" + rate);
-			this.roi.add(30.0 / (rate.doubleValue() / 1000.0));
+			this.roi.add(Client.getClients().size() / (rate.doubleValue() / 1000.0));
 			this.ctime.add(Long.valueOf(System.nanoTime()).doubleValue());
 			for (Client c : Client.getClients()) {
 				c.setThinkTime(rate.longValue());

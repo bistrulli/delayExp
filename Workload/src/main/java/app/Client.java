@@ -37,6 +37,7 @@ public class Client implements Runnable {
 		this.task = task;
 		this.clietId = UUID.randomUUID();
 		this.dying = false;
+		clients.add(this);
 	}
 
 	public void run() {
@@ -46,14 +47,12 @@ public class Client implements Runnable {
 			int thinking = this.task.getState().get("think").incrementAndGet();
 			// CompletableFuture<HttpResponse<String>> resp=null;
 
-			clients.add(this);
-
 			while (!this.dying) {
 
 				this.task.getEnqueueTime().put(this.clietId.toString(), System.nanoTime());
 				SimpleTask.getLogger().debug(String.format("%s thinking", thinking));
-				
-				if(this.dist.getMean()==0){
+
+				if (this.dist.getMean() == 0) {
 					TimeUnit.MILLISECONDS.sleep(Double.valueOf(this.dist.sample()).longValue());
 				}
 
@@ -119,4 +118,11 @@ public class Client implements Runnable {
 		Client.clients = clients;
 	}
 
+	public Boolean getDying() {
+		return dying;
+	}
+
+	public void setDying(Boolean dying) {
+		this.dying = dying;
+	}
 }
