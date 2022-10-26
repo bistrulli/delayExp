@@ -29,8 +29,8 @@ public class Client implements Runnable {
 	private Boolean dying = null;
 	private static String tier1Host = null;
 	public static AtomicBoolean isStarted = new AtomicBoolean(false);
-	
-	private static ConcurrentLinkedQueue<Client> clients=new ConcurrentLinkedQueue<>(); 
+
+	private static ConcurrentLinkedQueue<Client> clients = new ConcurrentLinkedQueue<>();
 
 	public Client(SimpleTask task, Long ttime) {
 		this.setThinkTime(ttime);
@@ -44,31 +44,33 @@ public class Client implements Runnable {
 
 			HttpResponse<String> resp = null;
 			int thinking = this.task.getState().get("think").incrementAndGet();
-			//CompletableFuture<HttpResponse<String>> resp=null;
-			
+			// CompletableFuture<HttpResponse<String>> resp=null;
+
 			clients.add(this);
 
 			while (!this.dying) {
 
 				this.task.getEnqueueTime().put(this.clietId.toString(), System.nanoTime());
 				SimpleTask.getLogger().debug(String.format("%s thinking", thinking));
-				TimeUnit.MILLISECONDS.sleep(Double.valueOf(this.dist.sample()).longValue());
+				
+				if(this.dist.getMean()==0){
+					TimeUnit.MILLISECONDS.sleep(Double.valueOf(this.dist.sample()).longValue());
+				}
 
 				SimpleTask.getLogger().debug(String.format("%s sending", this.task.getName()));
 				this.task.getState().get("think").decrementAndGet();
 
 				resp = Unirest.get(URI.create("http://" + Client.getTier1Host() + ":3100/?id=" + this.clietId.toString()
 						+ "&entry=e1" + "&snd=think").toString()).header("Connection", "close").asString();
-				
+
 //				this.clietId = UUID.randomUUID();
 //				Unirest.get(URI.create("http://" + Client.getTier1Host() + ":3100/?id=" + this.clietId.toString()
 //				+ "&entry=e1" + "&snd=think").toString()).header("Connection", "close").asStringAsync();
-				
-				
+
 				thinking = this.task.getState().get("think").incrementAndGet();
-				
-				this.task.getRts().addSample(new rtSample(this.task.getEnqueueTime().get(this.clietId.toString()),
-						System.nanoTime()));
+
+				this.task.getRts().addSample(
+						new rtSample(this.task.getEnqueueTime().get(this.clietId.toString()), System.nanoTime()));
 			}
 			SimpleTask.getLogger().debug(String.format(" user %s stopped", this.clietId));
 		} catch (InterruptedException e2) {

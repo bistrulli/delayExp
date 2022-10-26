@@ -28,7 +28,8 @@ public class Simlation implements Runnable {
 		this.roi = new ArrayList<Double>();
 		this.ctime = new ArrayList<Double>();
 		// this.dist = new UniformIntegerDistribution(50, 300);
-		this.rates = new int[] { 150, 50, 200, 30, 63 };
+		//this.rates = new int[] { 150, 50, 200, 30, 63 };
+		this.rates = new int[] {0, 0};
 	}
 
 	public void run() {
