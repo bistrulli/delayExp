@@ -45,7 +45,7 @@ public class Main {
 		final SimpleTask[] Sys = Main.genSystem();
 
 		ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
-		Simlation sim = new Simlation(Sys[0], 200);
+		Simlation sim = new Simlation(Sys[0], 250);
 		exec.scheduleAtFixedRate(sim, 0, 1, TimeUnit.SECONDS);
 
 		Sys[0].start();
