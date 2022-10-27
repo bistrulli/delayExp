@@ -59,12 +59,12 @@ public class Client implements Runnable {
 				SimpleTask.getLogger().debug(String.format("%s sending", this.task.getName()));
 				this.task.getState().get("think").decrementAndGet();
 
-//				resp = Unirest.get(URI.create("http://" + Client.getTier1Host() + ":3100/?id=" + this.clietId.toString()
-//						+ "&entry=e1" + "&snd=think").toString()).header("Connection", "close").asString();
+				resp = Unirest.get(URI.create("http://" + Client.getTier1Host() + ":3100/?id=" + this.clietId.toString()
+						+ "&entry=e1" + "&snd=think").toString()).header("Connection", "close").asString();
 
-				this.clietId = UUID.randomUUID();
-				Unirest.get(URI.create("http://" + Client.getTier1Host() + ":3100/?id=" + this.clietId.toString()
-				+ "&entry=e1" + "&snd=think").toString()).header("Connection", "close").asStringAsync();
+//				this.clietId = UUID.randomUUID();
+//				Unirest.get(URI.create("http://" + Client.getTier1Host() + ":3100/?id=" + this.clietId.toString()
+//				+ "&entry=e1" + "&snd=think").toString()).header("Connection", "close").asStringAsync();
 				
 				Client.nrq.addAndGet(1);
 				//System.out.println(Long.valueOf(Client.nrq.get()).doubleValue()*1e09/(System.nanoTime()-Client.time.get()));

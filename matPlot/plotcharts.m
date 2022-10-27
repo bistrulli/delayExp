@@ -172,6 +172,29 @@ t1=[0,diff(N1data.ctime/10^9)];
 t2=[0,diff(N2data.ctime/10^9)];
 
 save( 'f_1.txt','x','t1','t2','-ASCII' );
+   
+%time,roi,tauro,taur,tauro1,taur1,u1,cores1,Ts1,tauro2,taur2,u2,cores2,Ts2,Avg1,
+M=[ x',rates',ones(size(rates,2),1).*(N1req+N2req),(n2d+n1d)',...
+    ones(size(rates,2),1).*(N1req),n1d',u1',c1',t1',...
+    ones(size(rates,2),1).*(N2req),n2d',u2',c2',t2',...
+    smoothdata(n2d+n1d,"movmean",4)'];
+
+writematrix(M,'expData.csv') 
+
+
+
+
+%tempo,roi,tauro,taur,tauro1,taur1,tauro2,taur2,u1,core1,u2,core2,
+
+% SLA totale (tauro) cambita 1-2 volte nella prova
+% 	 
+% 	
+% SLA per i due tier:
+% 	
+% 	tauro2 = tauro*sigma_stiamto_2/(sigma_stimato_1+sigma_stimato_2)
+% 	
+% 	tauro1 = tauro-taur2
+% 	(la misura di taur del secondo tier, NON il set point)
 
 % set(gcf,'color','w');
 % exportgraphics(gcf,'realsim1.pdf')
