@@ -71,13 +71,13 @@ n2Cum=cumsum(n2d)./linspace(1,size(n2d,2),size(n2d,2));
 % grid on;
 % box on;
 
-% figure('units','normalized','outerposition',[0 0 1 1])
-% subplot(7,1,1);
-% stairs((N1data.ctime-N1data.ctime(1))/(10^9),rates);
-% ylim([min(rates),max(rates)*1.05])
-% title('(a) input rate [req/s]') 
-% grid on;
-% box on;
+figure('units','normalized','outerposition',[0 0 1 1])
+subplot(7,1,1);
+stairs((N1data.ctime-N1data.ctime(1))/(10^9),rates);
+ylim([min(rates),max(rates)*1.05])
+title('(a) input rate [req/s]') 
+grid on;
+box on;
 
 subplot(7,1,2);
 hold on
