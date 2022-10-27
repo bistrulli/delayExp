@@ -2,11 +2,11 @@ package app;
 
 import java.net.URI;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.commons.math3.distribution.AbstractRealDistribution;
 import org.apache.commons.math3.distribution.ExponentialDistribution;
@@ -14,7 +14,6 @@ import org.apache.commons.math3.distribution.ExponentialDistribution;
 import Server.SimpleTask;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
-import monitoring.rtSample;
 import net.spy.memcached.MemcachedClient;
 
 public class Client implements Runnable {
@@ -23,12 +22,13 @@ public class Client implements Runnable {
 	private ExponentialDistribution dist = null;
 	private long thinkTime = -1;
 	private UUID clietId = null;
-	public static AtomicInteger time = new AtomicInteger(0);
+	public static AtomicLong time = new AtomicLong(0);
 	private MemcachedClient memcachedClient = null;
 	private static AtomicInteger toKill = new AtomicInteger(0);
 	private Boolean dying = null;
 	private static String tier1Host = null;
 	public static AtomicBoolean isStarted = new AtomicBoolean(false);
+	private static AtomicInteger nrq=new AtomicInteger(0);
 
 	private static ConcurrentLinkedQueue<Client> clients = new ConcurrentLinkedQueue<>();
 
@@ -46,7 +46,8 @@ public class Client implements Runnable {
 			HttpResponse<String> resp = null;
 			int thinking = this.task.getState().get("think").incrementAndGet();
 			// CompletableFuture<HttpResponse<String>> resp=null;
-
+			
+			Client.time=new AtomicLong(System.nanoTime());
 			while (!this.dying) {
 
 //				this.task.getEnqueueTime().put(this.clietId.toString(), System.nanoTime());
@@ -65,7 +66,8 @@ public class Client implements Runnable {
 				Unirest.get(URI.create("http://" + Client.getTier1Host() + ":3100/?id=" + this.clietId.toString()
 				+ "&entry=e1" + "&snd=think").toString()).header("Connection", "close").asStringAsync();
 				
-				System.out.println("rqst");
+				Client.nrq.addAndGet(1);
+				System.out.println(Long.valueOf(Client.nrq.get()).doubleValue()/(System.nanoTime()-Client.time.get()));
 
 				thinking = this.task.getState().get("think").incrementAndGet();
 
