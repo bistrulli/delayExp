@@ -1,10 +1,10 @@
 clear
 
-N1data=load("../N1/N1out.mat");
-N2data=load("../N2/N2out.mat");
+N1data=load("../N1/N1out_2.mat");
+N2data=load("../N2/N2out_2.mat");
 Wdata=load("../Workload/roi_profile_2.mat");
 
-Wdata.roi=[300,Wdata.roi(1,1:end-1)];
+Wdata.roi=[50,Wdata.roi(1,1:end-1)];
 rates=[];
 for i=1:size(Wdata.roi,2)
     if(i==1)
@@ -79,6 +79,8 @@ title('(a) input rate [req/s]')
 grid on;
 box on;
 
+save( 'a.txt', 'out', '-ASCII' );
+
 subplot(7,1,2);
 hold on
 stairs((N1data.ctime-N1data.ctime(1))/(10^9),n2d+n1d);
@@ -140,6 +142,6 @@ grid on;
 box on;
 xlabel("time (s)")
 
-set(gcf,'color','w');
-exportgraphics(gcf,'realsim1.pdf')
-close()
+% set(gcf,'color','w');
+% exportgraphics(gcf,'realsim1.pdf')
+% close()
