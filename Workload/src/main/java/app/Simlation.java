@@ -34,7 +34,7 @@ public class Simlation implements Runnable {
 		this.rates = new Long[] { 150l, 50l, 200l, 30l, 63l };
 		// this.rates = new Long[] { 10l,5l,30l,30l};
 		this.slas=new Double[]{0.35,0.55,0.20,0.60,0.25};
-		this.j = this.generator.getJedisPool().getResource();
+		this.j = new Jedis("localhost");
 	}
 
 	public void run() {
