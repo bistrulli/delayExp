@@ -28,8 +28,8 @@ public class Simlation implements Runnable {
 		this.roi = new ArrayList<Double>();
 		this.ctime = new ArrayList<Double>();
 		// this.dist = new UniformIntegerDistribution(50, 300);
-		this.rates = new Long[] { 150l, 50l, 200l, 30l, 63l };
-		//this.rates = new Long[] { 150l, -3000l,150l,50l};
+		//this.rates = new Long[] { 150l, 50l, 200l, 30l, 63l };
+		this.rates = new Long[] { 150l,30l,150l};
 	}
 
 	public void run() {
@@ -38,28 +38,30 @@ public class Simlation implements Runnable {
 		if (this.simStep % this.toChange == 0) {
 
 			Long rate = null;
-			if (this.rates[this.rIdx] < 0) {
-				System.out.println("a");
-				rate = this.rates[this.rIdx - 1];
-				// aggiungo client
-				int nclient = Long.valueOf(this.rates[this.rIdx]).intValue() * -1;
-				System.out.println(nclient);
-				for (int c = 0; c < nclient; c++) {
-					this.generator.getThreadpool().submit(new Client(generator, rate));
-				}
-
-			} else if (this.rIdx>0 && this.rates[this.rIdx - 1] < 0) {
-				System.out.println("b");
-				// rimuovo client precedenti
-				int nclient = Long.valueOf(this.rates[this.rIdx - 1]).intValue() * -1;
-				for (int c = 0; c < nclient; c++) {
-					Client.getClients().poll().setDying(true);
-				}
-				rate = this.rates[this.rIdx];
-			} else {
-				System.out.println("c");
-				rate = this.rates[this.rIdx];
-			}
+//			if (this.rates[this.rIdx] < 0) {
+//				System.out.println("a");
+//				rate = this.rates[this.rIdx - 1];
+//				// aggiungo client
+//				int nclient = Long.valueOf(this.rates[this.rIdx]).intValue() * -1;
+//				System.out.println(nclient);
+//				for (int c = 0; c < nclient; c++) {
+//					this.generator.getThreadpool().submit(new Client(generator, rate));
+//				}
+//
+//			} else if (this.rIdx>0 && this.rates[this.rIdx - 1] < 0) {
+//				System.out.println("b");
+//				// rimuovo client precedenti
+//				int nclient = Long.valueOf(this.rates[this.rIdx - 1]).intValue() * -1;
+//				for (int c = 0; c < nclient; c++) {
+//					Client.getClients().poll().setDying(true);
+//				}
+//				rate = this.rates[this.rIdx];
+//			} else {
+//				System.out.println("c");
+//				rate = this.rates[this.rIdx];
+//			}
+			
+			rate=this.rates[this.rIdx];
 
 			System.out.println("new Rate=" + rate);
 			this.roi.add(Client.getClients().size() / (rate.doubleValue() / 1000.0));
