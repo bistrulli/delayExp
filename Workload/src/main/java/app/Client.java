@@ -49,12 +49,11 @@ public class Client implements Runnable {
 
 			while (!this.dying) {
 
-				this.task.getEnqueueTime().put(this.clietId.toString(), System.nanoTime());
+//				this.task.getEnqueueTime().put(this.clietId.toString(), System.nanoTime());
 				SimpleTask.getLogger().debug(String.format("%s thinking", thinking));
 
-				if (this.dist.getMean() == 0) {
-					TimeUnit.MILLISECONDS.sleep(Double.valueOf(this.dist.sample()).longValue());
-				}
+				
+				TimeUnit.MILLISECONDS.sleep(Double.valueOf(this.dist.sample()).longValue());
 
 				SimpleTask.getLogger().debug(String.format("%s sending", this.task.getName()));
 				this.task.getState().get("think").decrementAndGet();
@@ -68,8 +67,8 @@ public class Client implements Runnable {
 
 				thinking = this.task.getState().get("think").incrementAndGet();
 
-				this.task.getRts().addSample(
-						new rtSample(this.task.getEnqueueTime().get(this.clietId.toString()), System.nanoTime()));
+//				this.task.getRts().addSample(
+//						new rtSample(this.task.getEnqueueTime().get(this.clietId.toString()), System.nanoTime()));
 			}
 			SimpleTask.getLogger().debug(String.format(" user %s stopped", this.clietId));
 		} catch (InterruptedException e2) {
