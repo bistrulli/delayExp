@@ -64,6 +64,8 @@ public class Client implements Runnable {
 				this.clietId = UUID.randomUUID();
 				Unirest.get(URI.create("http://" + Client.getTier1Host() + ":3100/?id=" + this.clietId.toString()
 				+ "&entry=e1" + "&snd=think").toString()).header("Connection", "close").asStringAsync();
+				
+				System.out.println("rqst");
 
 				thinking = this.task.getState().get("think").incrementAndGet();
 
