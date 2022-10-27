@@ -179,7 +179,7 @@ M=[ x',rates',ones(size(rates,2),1).*(N1req+N2req),(n2d+n1d)',...
     ones(size(rates,2),1).*(N2req),n2d',u2',c2',t2',...
     smoothdata(n2d+n1d,"movmean",4)'];
 
-writematrix(M,'expData.csv') 
+%writematrix(M,'expData.csv') 
 
 
 

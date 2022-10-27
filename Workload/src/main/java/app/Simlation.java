@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.apache.commons.math3.distribution.UniformIntegerDistribution;
 
 import Server.SimpleTask;
+import redis.clients.jedis.Jedis;
 import us.hebi.matlab.mat.format.Mat5;
 import us.hebi.matlab.mat.types.MatFile;
 import us.hebi.matlab.mat.types.Matrix;
@@ -19,7 +20,9 @@ public class Simlation implements Runnable {
 	ArrayList<Double> roi = null;
 	ArrayList<Double> ctime = null;
 	Long[] rates = null;
+	Double[] slas=null;
 	int rIdx = 0;
+	Jedis j=null;
 
 	public Simlation(SimpleTask generator, Integer toChange) {
 		this.generator = generator;
@@ -29,14 +32,17 @@ public class Simlation implements Runnable {
 		this.ctime = new ArrayList<Double>();
 		// this.dist = new UniformIntegerDistribution(50, 300);
 		this.rates = new Long[] { 150l, 50l, 200l, 30l, 63l };
-		//this.rates = new Long[] { 10l,5l,30l,30l};
+		// this.rates = new Long[] { 10l,5l,30l,30l};
+		this.slas=new Double[]{0.35,0.55,0.20,0.60,0.25};
+		this.j = this.generator.getJedisPool().getResource();
 	}
 
 	public void run() {
 		this.simStep += 1;
 		System.out.println("step=" + this.simStep);
 		if (this.simStep % this.toChange == 0) {
-			Long rate=this.rates[this.rIdx];
+			Long rate = this.rates[this.rIdx];
+			this.j.set("N1_sla", this.slas[this.rIdx]+"");
 
 			System.out.println("new Rate=" + rate);
 			this.roi.add(Client.getClients().size() / (rate.doubleValue() / 1000.0));
