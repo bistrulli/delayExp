@@ -30,6 +30,8 @@ public class N1HTTPHandler extends TierHttpHandler {
 		Map<String, Object> context = Maps.newHashMap();
 		context.put("task", this.getLqntask().getName());
 		context.put("entry", this.getName());
+		
+		String renderedTemplate = jinjava.render(this.getWebPageTpl(), context);
 
 //		this.measureEgress();
 //		HttpResponse<String> resp = Unirest
@@ -37,11 +39,10 @@ public class N1HTTPHandler extends TierHttpHandler {
 //				.header("Connection", "close").asString();
 //		this.measureReturn();
 
-		Unirest.get(URI.create("http://localhost:3200/?id=" + params.get("id") + "&entry=e1" + "&snd=e1").toString())
+		Unirest.get(URI.create("http://localhost:3200/?id=" + params.get("id") + "&entry=e1" + "&snd=e1_N1").toString())
 				.header("Connection", "close").asStringAsync();
 
-		String renderedTemplate = jinjava.render(this.getWebPageTpl(), context);
-
+	
 		if (!this.getLqntask().isEmulated()) {
 			this.doWorkCPU();
 		} else {
