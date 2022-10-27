@@ -67,7 +67,7 @@ public class Client implements Runnable {
 				+ "&entry=e1" + "&snd=think").toString()).header("Connection", "close").asStringAsync();
 				
 				Client.nrq.addAndGet(1);
-				System.out.println(Long.valueOf(Client.nrq.get()).doubleValue()/(System.nanoTime()-Client.time.get()));
+				System.out.println(Long.valueOf(Client.nrq.get()).doubleValue()*1e09/(System.nanoTime()-Client.time.get()));
 
 				thinking = this.task.getState().get("think").incrementAndGet();
 
