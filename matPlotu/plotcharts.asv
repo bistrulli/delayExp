@@ -2,7 +2,7 @@ clear
 
 N1data=load("../N1/N1out.mat");
 N2data=load("../N2/N2out.mat");
-Wdata=load("../Workload/roi_profile.mat");
+Wdata=load("../Workload/roi_profile_2.mat");
 
 Wdata.roi=[300,Wdata.roi(1,1:end-1)];
 rates=[];
@@ -140,6 +140,6 @@ grid on;
 box on;
 xlabel("time (s)")
 
-% set(gcf,'color','w');
-% exportgraphics(gcf,'realsim1.pdf')
-% close()
+set(gcf,'color','w');
+exportgraphics(gcf,'realsim1.pdf')
+close()
