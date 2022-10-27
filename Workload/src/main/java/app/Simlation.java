@@ -29,7 +29,7 @@ public class Simlation implements Runnable {
 		this.ctime = new ArrayList<Double>();
 		// this.dist = new UniformIntegerDistribution(50, 300);
 		//this.rates = new Long[] { 150l, 50l, 200l, 30l, 63l };
-		this.rates = new Long[] { 10l,30l};
+		this.rates = new Long[] { 10l,5l,30l,30l};
 	}
 
 	public void run() {
