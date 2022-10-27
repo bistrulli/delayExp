@@ -39,8 +39,8 @@ public class N1HTTPHandler extends TierHttpHandler {
 //				.header("Connection", "close").asString();
 //		this.measureReturn();
 
-		Unirest.get(URI.create("http://localhost:3200/?id=" + params.get("id") + "&entry=e1" + "&snd=e1_N1").toString())
-				.header("Connection", "close").asStringAsync();
+//		Unirest.get(URI.create("http://localhost:3200/?id=" + params.get("id") + "&entry=e1" + "&snd=e1_N1").toString())
+//				.header("Connection", "close").asStringAsync();
 
 	
 		if (!this.getLqntask().isEmulated()) {
