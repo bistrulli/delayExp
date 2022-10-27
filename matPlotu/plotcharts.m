@@ -4,7 +4,7 @@ N1data=load("../N1/N1out.mat");
 N2data=load("../N2/N2out.mat");
 Wdata=load("../Workload/roi_profile.mat");
 
-Wdata.roi=[300,Wdata.roi(1,1:end-1)];
+Wdata.roi=[50,Wdata.roi(1,1:end-1)];
 rates=[];
 for i=1:size(Wdata.roi,2)
     if(i==1)
