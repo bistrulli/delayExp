@@ -83,11 +83,11 @@ n2Cum=cumsum(n2d)./linspace(1,size(n2d,2),size(n2d,2));
 % grid on;
 % box on;
 
-x=(N1data.ctime(1,1:nStep)-N1data.ctime(1,1))/(10^9);
+x=(N1data.ctime()-N1data.ctime(1))/(10^9);
 
 figure('units','normalized','outerposition',[0 0 1 1])
 subplot(7,1,1);
-stairs(x,rates);
+stairs((N1data.ctime-N1data.ctime(1))/(10^9),rates);
 ylim([min(rates),max(rates)*1.05])
 title('(a) input rate [req/s]') 
 grid on;
@@ -127,8 +127,8 @@ legend("N1 istantaneous","N1 average","N1 setpoint","N2 istantaneous","N2 averag
 grid on;
 box on;
 
-u1=N1data.u(1,1:nStep);
-u2=N2data.u(1,1:nStep);
+u1=N1data.u;
+u2=N2data.u;
 
 subplot(7,1,5);
 hold on
@@ -139,8 +139,8 @@ legend("N1","N2","Orientation","horizontal","Location","southeast")
 grid on;
 box on;
 
-c1=N1data.core(1,1:nStep);
-c2=N2data.core(1,1:nStep);
+c1=N1data.core;
+c2=N2data.core;
 
 subplot(7,1,6);
 hold on
@@ -153,16 +153,16 @@ box on;
 
 subplot(7,1,7);
 hold on
-plot(x,[0,diff(N1data.ctime(1,1:nStep)/10^9)],"LineWidth",1.5);
-plot(x,[0,diff(N2data.ctime(1,1:nStep)/10^9)],"LineWidth",1.5,"LineStyle",'-.')
+plot(x,[0,diff(N1data.ctime/10^9)],"LineWidth",1.5);
+plot(x,[0,diff(N2data.ctime/10^9)],"LineWidth",1.5,"LineStyle",'-.')
 title('(g)  time between control actions [s]') 
 legend("N1","N2","Orientation","horizontal")
 grid on;
 box on;
 xlabel("time (s)")
 
-t1=[0,diff(N1data.ctime(1,1:nStep)/10^9)];
-t2=[0,diff(N2data.ctime(1,1:nStep)/10^9)];
+t1=[0,diff(N1data.ctime/10^9)];
+t2=[0,diff(N2data.ctime/10^9)];
 
    
 %time,roi,tauro,taur,tauro1,taur1,u1,cores1,Ts1,tauro2,taur2,u2,cores2,Ts2,Avg1,
