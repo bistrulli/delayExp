@@ -20,14 +20,14 @@ for i=1:size(Wdata.roi,2)
     end
 end
 
-slas=slas(1:end-1);
+slas=slas(1:end);
 
 startTime=0;
 
-n1d=N1data.rt(1,1:end-1);
+n1d=N1data.rt;
 n2d=N2data.rt;
 
-N1req=0.25;
+% N1req=0.25;
 N2req=0.15;
 
 n1Cum=cumsum(n1d)./linspace(1,size(n1d,2),size(n1d,2));
@@ -78,7 +78,7 @@ n2Cum=cumsum(n2d)./linspace(1,size(n2d,2),size(n2d,2));
 % grid on;
 % box on;
 
-x=(N2data.ctime-N2data.ctime(1))/(10^9);
+x=(N1data.ctime-N1data.ctime(1))/(10^9);
 
 figure('units','normalized','outerposition',[0 0 1 1])
 subplot(7,1,1);
@@ -87,8 +87,6 @@ ylim([min(rates),max(rates)*1.05])
 title('(a) input rate [req/s]') 
 grid on;
 box on;
-
-save( 'a_1.txt','x','rates', '-ASCII' );
 
 subplot(7,1,2);
 hold on
@@ -100,12 +98,6 @@ legend("istantaneous","average","setpoint","Orientation","horizontal")
 grid on;
 box on;
 
-s_t=n2d+n1d;
-s_avg=n1Cum+n2Cum;
-reqT=N2req+N1req;
-
-save( 'b_1.txt','x','s_t','s_avg','reqT','-ASCII' );
-
 subplot(7,1,3);
 hold on
 stairs(x,smoothdata(n2d+n1d,"movmean",4));
@@ -116,11 +108,6 @@ legend("istantaneous","average","setpoint","Orientation","horizontal")
 grid on;
 box on;
 
-
-s_smooth=smoothdata(n2d+n1d,"movmean",4);
-s_avg=n1Cum+n2Cum;
-reqT=N2req+slas;
-save( 'c_1.txt','x','s_smooth','s_avg','reqT','-ASCII' );
 
 subplot(7,1,4);
 hold on
@@ -135,39 +122,33 @@ legend("N1 istantaneous","N1 average","N1 setpoint","N2 istantaneous","N2 averag
 grid on;
 box on;
 
-save( 'd_1.txt','x','n1d','n1Cum','N1req','n2d','n2Cum','N2req','-ASCII' );
+u1=N1data.u;
+u2=N2data.u;
 
 subplot(7,1,5);
 hold on
-plot(x,N1data.u(1,1:end-1),"LineWidth",1.5);
-plot(x,N2data.u,"LineWidth",1.5,"LineStyle",'-.')
+plot(x,u1,"LineWidth",1.5);
+plot(x,u2,"LineWidth",1.5,"LineStyle",'-.')
 title('(e)  linearised control signals') 
 legend("N1","N2","Orientation","horizontal","Location","southeast")
 grid on;
 box on;
 
-u1=N1data.u(1:end-1);
-u2=N2data.u;
-
-save( 'e_1.txt','x','u1','u2','-ASCII' );
+c1=N1data.core;
+c2=N2data.core;
 
 subplot(7,1,6);
 hold on
-plot(x,N1data.core(1,1:end-1),"LineWidth",1.5);
-plot(x,N2data.core,"LineWidth",1.5,"LineStyle",'-.')
+plot(x,c1,"LineWidth",1.5);
+plot(x,c2,"LineWidth",1.5,"LineStyle",'-.')
 title('(f)  allotted resources [cores]') 
 legend("N1","N2","Orientation","horizontal")
 grid on;
 box on;
 
-c1=N1data.core(1:end-1);
-c2=N2data.core;
-
-save( 'f_1.txt','x','c1','c2','-ASCII' );
-
 subplot(7,1,7);
 hold on
-plot(x,[0,diff(N1data.ctime(1,1:end-1)/10^9)],"LineWidth",1.5);
+plot(x,[0,diff(N1data.ctime/10^9)],"LineWidth",1.5);
 plot(x,[0,diff(N2data.ctime/10^9)],"LineWidth",1.5,"LineStyle",'-.')
 title('(g)  time between control actions [s]') 
 legend("N1","N2","Orientation","horizontal")
@@ -175,15 +156,14 @@ grid on;
 box on;
 xlabel("time (s)")
 
-t1=[0,diff(N1data.ctime(1:end-1)/10^9)];
+t1=[0,diff(N1data.ctime/10^9)];
 t2=[0,diff(N2data.ctime/10^9)];
 
-save( 'f_1.txt','x','t1','t2','-ASCII' );
    
 %time,roi,tauro,taur,tauro1,taur1,u1,cores1,Ts1,tauro2,taur2,u2,cores2,Ts2,Avg1,
-M=[ x',rates(1:end-1)',ones(size(rates(1:end-1),2),1).*(slas+N2req)',(n2d+n1d)',...
+M=[ x',rates',ones(size(rates,2),1).*(slas+N2req)',(n2d+n1d)',...
     slas',n1d',u1',c1',t1',...
-    ones(size(rates(1:end-1),2),1).*(N2req),n2d',u2',c2',t2',...
+    ones(size(rates,2),1).*(N2req),n2d',u2',c2',t2',...
     smoothdata(n2d+n1d,"movmean",4)'];
 
 % writematrix(M,'expData.csv') 
