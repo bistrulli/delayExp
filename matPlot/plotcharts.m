@@ -1,8 +1,12 @@
 clear
 
-N1data=load("../N1/N1out.mat");
-N2data=load("../N2/N2out.mat");
-Wdata=load("../Workload/roi_profile.mat");
+Variance="L";
+alfa="0.900";
+nr="20"; 
+
+N1data=load(sprintf("../N1/N1out_%s_%s_%s.mat",Variance,alfa,nr));
+N2data=load(sprintf("../N2/N2out_%s_%s_%s.mat",Variance,alfa,nr));
+Wdata=load(sprintf("../Workload/roi_profile_%s_%s_%s.mat",Variance,alfa,nr));
 
 Wdata.roi=[300,Wdata.roi(1,1:end-1)];
 slai=[0.25,0.35,0.55,0.20,0.60,0.25];
@@ -166,7 +170,8 @@ M=[ x',rates',ones(size(rates,2),1).*(slas+N2req)',(n2d+n1d)',...
     ones(size(rates,2),1).*(N2req),n2d',u2',c2',t2',...
     smoothdata(n2d+n1d,"movmean",4)'];
 
-% writematrix(M,'expData.csv') 
+
+writematrix(M,sprintf("expData_%s_%s_%s.csv",Variance,alfa,nr));
 
 
 
