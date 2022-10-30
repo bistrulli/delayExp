@@ -2,7 +2,7 @@ clear
 
 Variance="L";
 alfa="0.900";
-nr="20"; 
+nr="40"; 
 
 N1data=load(sprintf("../N1/N1out_%s_%s_%s.mat",Variance,alfa,nr));
 N2data=load(sprintf("../N2/N2out_%s_%s_%s.mat",Variance,alfa,nr));
