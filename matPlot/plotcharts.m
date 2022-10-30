@@ -1,10 +1,10 @@
 clear
 
-Variance1="L";
+Variance1="LL";
 alfa1="0.930";
 nr1="40";
 
-Variance2="L";
+Variance2="LL";
 alfa2="0.960";
 nr2="40";
 
