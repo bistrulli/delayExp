@@ -99,7 +99,7 @@ x=(N1data.ctime(1,1:nStep)-N1data.ctime(1,1))/(10^9);
 
 figure('units','normalized','outerposition',[0 0 1 1])
 subplot(7,1,1);
-stairs(x,rates);
+stairs(x,rates(1,1:nStep));
 ylim([min(rates),max(rates)*1.05])
 title('(a) input rate [req/s]')
 grid on;
@@ -110,7 +110,7 @@ subplot(7,1,2);
 hold on
 stairs(x,n2d+n1d);
 % plot(x,n1Cum+n2Cum,"LineWidth",1.5)
-plot(x,slas+N2req,'-.',"LineWidth",1.5);
+plot(x,slas(1,1:nStep)+N2req,'-.',"LineWidth",1.5);
 title('(b) overall response time [s]')
 legend("istantaneous","average","setpoint","Orientation","horizontal")
 grid on;
@@ -120,7 +120,7 @@ subplot(7,1,3);
 hold on
 stairs(x,smoothdata(n2d+n1d,"movmean",avgH));
 % plot(x,n1Cum+n2Cum,"LineWidth",1.5)
-plot(x,N2req+slas,'-.',"LineWidth",1.5);
+plot(x,N2req+slas(1,1:nStep),'-.',"LineWidth",1.5);
 title('(c) overall response time, 5 seconds average [s]')
 legend("istantaneous","average","setpoint","Orientation","horizontal")
 grid on;
@@ -131,7 +131,7 @@ subplot(7,1,4);
 hold on
 stairs(x,n1d);
 % plot(x,n1Cum,"LineWidth",1.5)
-plot(x,slas,'-.',"LineWidth",1.5);
+plot(x,slas(1,1:nStep),'-.',"LineWidth",1.5);
 stairs(x,n2d);
 % plot(x,n2Cum,"LineWidth",1.5)
 yline(N2req,'-.',"LineWidth",1.5);
@@ -179,9 +179,9 @@ t2=[0,diff(N2data.ctime(1,1:nStep)/10^9)];
 
 
 %time,roi,tauro,taur,tauro1,taur1,u1,cores1,Ts1,tauro2,taur2,u2,cores2,Ts2,Avg1,
-M=[ x',rates',ones(size(rates,2),1).*(slas+N2req)',(n2d+n1d)',...
-    slas',n1d',u1',c1',t1',...
-    ones(size(rates,2),1).*(N2req),n2d',u2',c2',t2',...
+M=[ x',rates(1,1:nStep)',ones(nStep,1).*(slas(1,1:nStep)+N2req)',(n2d+n1d)',...
+    slas(1,1:nStep)',n1d',u1',c1',t1',...
+    ones(nStep,1).*(N2req),n2d',u2',c2',t2',...
     smoothdata(n2d+n1d,"movmean",avgH)'];
 
 
