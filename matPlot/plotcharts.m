@@ -8,6 +8,8 @@ Variance2="L";
 alfa2="0.900";
 nr2="20";
 
+avgH=1;
+
 if(Variance1~="none")
     N1data=load(sprintf("../N1/N1out_%s_%s_%s.mat",Variance1,alfa1,nr1));
     N2data=load(sprintf("../N2/N2out_%s_%s_%s.mat",Variance2,alfa2,nr2));
@@ -116,7 +118,7 @@ box on;
 
 subplot(7,1,3);
 hold on
-stairs(x,smoothdata(n2d+n1d,"movmean",33));
+stairs(x,smoothdata(n2d+n1d,"movmean",avgH));
 % plot(x,n1Cum+n2Cum,"LineWidth",1.5)
 plot(x,N2req+slas,'-.',"LineWidth",1.5);
 title('(c) overall response time, 5 seconds average [s]')
@@ -180,7 +182,7 @@ t2=[0,diff(N2data.ctime(1,1:nStep)/10^9)];
 M=[ x',rates',ones(size(rates,2),1).*(slas+N2req)',(n2d+n1d)',...
     slas',n1d',u1',c1',t1',...
     ones(size(rates,2),1).*(N2req),n2d',u2',c2',t2',...
-    smoothdata(n2d+n1d,"movmean",33)'];
+    smoothdata(n2d+n1d,"movmean",avgH)'];
 
 
 if(Variance1~="none")
