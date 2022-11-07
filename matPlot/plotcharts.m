@@ -1,12 +1,12 @@
 clear
 
-Variance1="none";
-alfa1="0.900";
-nr1="20";
+Variance1="L";
+alfa1="0.950";
+nr1="10";
 
 Variance2="L";
-alfa2="0.900";
-nr2="20";
+alfa2="0.950";
+nr2="10";
 
 avgH=1;
 
