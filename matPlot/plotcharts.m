@@ -206,3 +206,5 @@ end
 % set(gcf,'color','w');
 % exportgraphics(gcf,'realsim1.pdf')
 % close()
+
+%7000+1.2+0.63*1.2+0.32*(3.7+2.2+1.9+2.6)+0.05*(4.9+17.4+5.6+6.6)
