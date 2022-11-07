@@ -1,6 +1,6 @@
 #!/bin/sh
 
-sudo echo "100000 100000" > /sys/fs/cgroup/N2/e1/cpu.max
+sudo echo "max" > /sys/fs/cgroup/N2/e1/cpu.max
 
 redis-cli set N2_sla 0.15
 alfa=0.90
