@@ -189,7 +189,7 @@ M=[ x',rates(1,1:nStep)',ones(nStep,1).*(slas(1,1:nStep)+N2req)',(n2d+n1d)',...
 if(Variance1~="none")
     writematrix(M,sprintf("expData_%s_%s_%s_%s_%s_%s.csv",Variance1,alfa1,nr1,Variance2,alfa2,nr2));
 else
-    writematrix(M,sprintf("expData.csv",Variance1,alfa1,nr1,Variance2,alfa2,nr2));
+    writematrix(M,sprintf("expData_sat.csv",Variance1,alfa1,nr1,Variance2,alfa2,nr2));
 end
 
 
