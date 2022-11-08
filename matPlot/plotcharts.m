@@ -22,7 +22,7 @@ end
 
 Wdata.roi=[300,Wdata.roi(1,1:end-1)];
 %slai=[0.25,0.35,0.55,0.20,0.60,0.25];
-slai=[0.25,0.25,0.25,0.25,0.25,0.25];
+slai=[0.25,0.12,0.25,0.25,0.25,0.25];
 rates=[];
 slas=[];
 for i=1:size(Wdata.roi,2)
@@ -189,7 +189,7 @@ M=[ x',rates(1,1:nStep)',ones(nStep,1).*(slas(1,1:nStep)+N2req)',(n2d+n1d)',...
 if(Variance1~="none")
     writematrix(M,sprintf("expData_%s_%s_%s_%s_%s_%s.csv",Variance1,alfa1,nr1,Variance2,alfa2,nr2));
 else
-    writematrix(M,sprintf("expData_sat.csv",Variance1,alfa1,nr1,Variance2,alfa2,nr2));
+%     writematrix(M,sprintf("expData_sat.csv",Variance1,alfa1,nr1,Variance2,alfa2,nr2));
 end
 
 

@@ -35,7 +35,7 @@ public class Simlation implements Runnable {
 		this.rates = new Long[] { 150l, 150l, 150l};
 		// this.rates = new Long[] { 10l,5l,30l,30l};
 		//this.slas=new Double[]{0.35,0.55,0.20,0.60,0.25};
-		this.slas=new Double[]{0.12,0.25,0.25};
+		this.slas=new Double[]{-0.25,0.25,0.25};
 		this.j = new Jedis("localhost");
 	}
 
@@ -44,6 +44,7 @@ public class Simlation implements Runnable {
 		System.out.println("step=" + this.simStep);
 		if (this.simStep % this.toChange == 0) {
 			Long rate = this.rates[this.rIdx];
+			
 			this.j.set("N1_sla", this.slas[this.rIdx]+"");
 
 			System.out.println("new Rate=" + rate);
